@@ -1,7 +1,7 @@
 import json
 
 
-def get_api(filename="config.json"):
+def get_api_keys(filename="config.json"):
     """
     Reads and returns the API key from a JSON config file.
     
@@ -15,7 +15,7 @@ def get_api(filename="config.json"):
     try:
         with open(filename, "r") as file:
             config = json.load(file)
-        return config.get("api_key", "")
+        return config.get("groq_api_key", ""), config.get("elevenlabs_api_key","")
     except (FileNotFoundError, json.JSONDecodeError):
         print(f"Error: Could not read or parse {filename}.")
         return ""
@@ -23,14 +23,10 @@ def get_api(filename="config.json"):
 def main():
     
     # Get the API key from the config
-    api_key = get_api()
+    groq_api_key,elevenlabs_api_key = get_api_keys()
 
-    # Just print the API key for demonstration
-    # In a real script, you'd use this key to make an API request, etc.
-    print(f"Your API key is: {api_key}")
+    print(f"Your groq API key is: {groq_api_key}\nYour elevenlabs API key is:{elevenlabs_api_key}")
 
-    # Example placeholder for actual API logic:
-    # e.g., requests.get("https://api.example.com/data", headers={"Authorization": f"Bearer {api_key}"})
     
 
 
