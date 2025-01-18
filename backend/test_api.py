@@ -35,3 +35,15 @@ def test_check_purchase_endpoint():
     response = client.post("/api/check-purchase", json={"amount": 100, "description": "New TV"})
     assert response.status_code == 200
     print(response.json())
+
+if __name__ == "__main__":
+    print("Running all tests...\n")
+    
+    # Run each test manually
+    test_chat_endpoint()
+    test_audio_to_text_endpoint()
+    test_reset_endpoint()
+    test_budget_summary_endpoint()
+    test_check_purchase_endpoint()
+
+    print("\nAll tests executed.")

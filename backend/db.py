@@ -61,6 +61,21 @@ def edit_budget_item(item_name, updates):
     print(f"Updated budget item '{item_name}' with {updates}.")
     return result
 
+def get_budget_limit():
+    """
+    Retrieves the budget limit from the database.
+    :return: The budget limit as a float, or a default value if not set.
+    """
+    settings_collection = db["settings"]
+    limit_doc = settings_collection.find_one({"key": "budget_limit"})
+    
+    if limit_doc and "value" in limit_doc:
+        return limit_doc["value"]
+    
+    # Default budget limit if not found in the database
+    return 2000.0
+
+
 def get_budget_items():
     """
     Retrieves all budget items from the database.
@@ -116,5 +131,5 @@ if __name__ == "__main__":
         print("Connection to MongoDB was successful.")
     except Exception as e:
         print("Error while connecting to MongoDB:", e)
-    finally:
-        close_db_connection()
+    
+        

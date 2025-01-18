@@ -1,1 +1,3 @@
 config.json
+*.pyc
+backend/__pycache__/db.cpython-310.pyc
