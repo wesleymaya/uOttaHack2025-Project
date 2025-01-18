@@ -29,16 +29,20 @@ export default function AudioRecorder({ addMessage }) {
     };
 
     const stopRecording = () => {
-        mediaRecorder.stop();
+        mediaRecorder?.stop();
         setRecording(false);
     };
 
     return (
         <div>
             {recording ? (
-                <button onClick={stopRecording}>Stop Recording</button>
+                <button className="bg-red-500 text-white px-4 py-2 rounded" onClick={stopRecording}>
+                    Stop Recording
+                </button>
             ) : (
-                <button onClick={startRecording}>Start Recording</button>
+                <button className="bg-green-500 text-white px-4 py-2 rounded" onClick={startRecording}>
+                    Start Recording
+                </button>
             )}
         </div>
     );

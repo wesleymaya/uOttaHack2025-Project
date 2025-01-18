@@ -4,5 +4,12 @@ export default function ResetButton({ setMessages }) {
         setMessages([]);
     };
 
-    return <button onClick={resetBudget}>Reset Budget</button>;
+    return (
+        <button
+            className="bg-gray-500 text-white px-4 py-2 rounded"
+            onClick={resetBudget}
+        >
+            Reset Budget
+        </button>
+    );
 }
