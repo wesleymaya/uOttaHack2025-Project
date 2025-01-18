@@ -15,16 +15,16 @@ def get_api(filename="config.json"):
     try:
         with open(filename, "r") as file:
             config = json.load(file)
-        return config.get("api_key", "")
+        return config.get("grok_api_key", ""), config.get("elevenlabs_api_key","")
     except (FileNotFoundError, json.JSONDecodeError):
         print(f"Error: Could not read or parse {filename}.")
         return ""
     
 def main():
     # Demonstration of how to use get_api()
-    api_key = get_api()
-    if api_key:
-        print(f"Your API key is: {api_key}")
+    grok_key,elevenlabs_key = get_api()
+    if grok_key and elevenlabs_key:
+        print(f"Your API key is: {grok_key}\nYour elevenlabs key is: {elevenlabs_key}")
     else:
         print("No API key found.")
     
