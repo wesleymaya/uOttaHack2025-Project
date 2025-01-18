@@ -4,12 +4,13 @@ from langchain_core.output_parsers import JsonOutputParser
 from main import get_api
 import json
 
-groq_api,_ = get_api()
+# Initialize Groq API
+groq_api, _ = get_api()
 
 # Initialize Groq LLM
 llm = ChatGroq(
-    model_name = 'llama-3.3-70b-versatile',
-    temperature = 0.5, 
+    model_name='llama-3.3-70b-versatile',
+    temperature=0.5,
     api_key=groq_api
 )
 
@@ -17,39 +18,84 @@ llm = ChatGroq(
 parser = JsonOutputParser(pydantic_object={
     "type": "object",
     "properties": {
-        "name": {"type": "string"},
-        "price": {"type": "number"},
-        "features": {
-            "type": "array",
-            "items": {"type": "string"}
+        "Budget": {
+            "type": "object",
+            "properties": {
+                "budget_limit": {"type": "number"},
+                "items": {
+                    "type": "array",
+                    "items": {
+                        "type": "object",
+                        "properties": {
+                            "item_name": {"type": "string"},
+                            "amount": {"type": "number"},
+                            "category": {
+                                "type": "string",
+                                "enum": ["Recurring", "Regular", "Irregular"]
+                            },
+                            "importance_rank": {"type": "integer"},
+                            "recurrence_schedule": {"type": ["string", "null"]},
+                            "due_date": {"type": ["integer", "null"]}
+                        },
+                        "required": [
+                            "item_name", "amount", "category",
+                            "importance_rank", "recurrence_schedule", "due_date"
+                        ]
+                    }
+                }
+            },
+            "required": ["budget_limit", "items"]
         }
-    }
+    },
+    "required": ["Budget"]
 })
 
-# Create a simple prompt
+# Create a prompt to extract budget details
 prompt = ChatPromptTemplate.from_messages([
-    ("system", """Extract product details into JSON with this structure:
+    ("system", """Extract budget details into JSON with this structure:
         {{
-            "name": "product name here",
-            "price": number_here_without_currency_symbol,
-            "features": ["feature1", "feature2", "feature3"]
+            "Budget": {{
+                "budget_limit": 2000.0,
+                "items": [
+                    {{
+                        "item_name": "Rent",
+                        "amount": 1200.0,
+                        "category": "Recurring",
+                        "importance_rank": 1,
+                        "recurrence_schedule": "monthly",
+                        "due_date": 1
+                    }},
+                    {{
+                        "item_name": "Groceries",
+                        "amount": 300.0,
+                        "category": "Regular",
+                        "importance_rank": 2,
+                        "recurrence_schedule": "weekly",
+                        "due_date": null
+                    }}
+                ]
+            }}
         }}"""),
     ("user", "{input}")
 ])
 
-# Create the chain that guarantees JSON output
+# Create the chain that ensures the output matches the JSON structure
 chain = prompt | llm | parser
 
-def parse_product(description: str) -> dict:
+def parse_budget(description: str) -> dict:
+    """
+    Parse a budget description into the expected JSON format.
+    :param description: The textual description of the budget.
+    :return: Parsed JSON object.
+    """
     result = chain.invoke({"input": description})
     print(json.dumps(result, indent=2))
+    return result
 
-        
 # Example usage
-description = """The Kees Van Der Westen Speedster is a high-end, single-group espresso machine known for its precision, performance, 
-and industrial design. Handcrafted in the Netherlands, it features dual boilers for brewing and steaming, PID temperature control for 
-consistency, and a unique pre-infusion system to enhance flavor extraction. Designed for enthusiasts and professionals, it offers 
-customizable aesthetics, exceptional thermal stability, and intuitive operation via a lever system. The pricing is approximatelyt $14,499 
-depending on the retailer and customization options."""
+description = """
+My budget has a limit of $2500. For recurring expenses, I have rent at $1200 monthly, due on the 1st of every month.
+Groceries cost about $300 weekly. My irregular expenses include car repairs, which are about $500 but happen unpredictably.
+"""
 
-parse_product(description)
+parse_budget(description)
