@@ -1,6 +1,7 @@
 from langchain_groq import ChatGroq
 from langchain_core.prompts import ChatPromptTemplate
 from langchain_core.output_parsers import JsonOutputParser
+from pandas import describe_option
 from main import get_api
 import json
 
@@ -93,9 +94,9 @@ def parse_budget(description: str) -> dict:
     return result
 
 # Example usage
-description = """
-My budget has a limit of $2500. For recurring expenses, I have rent at $1200 monthly, due on the 1st of every month.
-Groceries cost about $300 weekly. My irregular expenses include car repairs, which are about $500 but happen unpredictably.
-"""
-
+# description = """
+# My budget has a limit of $2500. For recurring expenses, I have rent at $1200 monthly, due on the 1st of every month.
+# Groceries cost about $300 weekly. My irregular expenses include car repairs, which are about $500 but happen unpredictably.
+# """
+description = input("Enter your budget stuff: ")
 parse_budget(description)
