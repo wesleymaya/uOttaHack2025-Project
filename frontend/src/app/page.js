@@ -9,7 +9,7 @@ export default function Page() {
     const [messages, setMessages] = useState([]);
 
     const addMessage = (role, content) => {
-        setMessages([...messages, { role, content }]);
+        setMessages((prevMessages) => [...prevMessages, { role, content }]);
     };
 
     return (
