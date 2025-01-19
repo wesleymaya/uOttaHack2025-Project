@@ -74,8 +74,8 @@ if __name__ == "__main__":
     try:
         connect_to_db()
         with open("message.json","r") as file:
-            jsontestitem = json.load("file")
-        send_json_to_mongodb(jsontestitem)
+            jsontestitem = json.load(file)
+        send_json_to_mongodb(jsontestitem,conversation_collection)
         #print("Connection to MongoDB was successful.")
     except Exception as e:
         print("Error while connecting to MongoDB:", e)
