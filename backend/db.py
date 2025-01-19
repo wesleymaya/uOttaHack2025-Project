@@ -17,7 +17,6 @@ def connect_to_db():
         # Test the connection
         client.admin.command("ping")
         db = client["main_db"]
-        budget_items_collection = db["budget_items"]
         conversation_collection = db["conversation_state"]
         print("Connected to MongoDB!")
     except errors.ConnectionFailure as e:
@@ -68,7 +67,7 @@ def close_db_connection():
 if __name__ == "__main__":
     try:
         connect_to_db()
-        
+
         print("Connection to MongoDB was successful.")
     except Exception as e:
         print("Error while connecting to MongoDB:", e)

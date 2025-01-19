@@ -216,11 +216,11 @@ def get_conversation_string():
 # print("------"*5,"END OF 3RD PROMPT","------"*5 )
 
 
-chatprompt = "Starting chat"
-#print(chatprompt)
-while True:
-    description = input(chatprompt+": ")
-    if description != "-1":
-        parse_budget(description)
-        chatprompt = get_conversation_string()
+# chatprompt = "Starting chat"
+# #print(chatprompt)
+# while True:
+#     description = input(chatprompt+": ")
+#     if description != "-1":
+#         parse_budget(description)
+#         chatprompt = get_conversation_string()
 
