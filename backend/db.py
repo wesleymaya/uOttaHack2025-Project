@@ -40,8 +40,12 @@ def send_json_to_mongodb(data, collection):
     """
     try:
         # Overwrite the existing data in the collection
-        collection.delete_many({})  # Delete all existing documents
-        result = collection.insert_one(data)  # Insert the new data
+        if(collection != None and data != None):
+            # Delete all existing documents
+            collection.delete_many({})
+        
+        # Insert the new data
+        result = collection.insert_one(data)    
         
         print("JSON content successfully sent to MongoDB!")
         return result

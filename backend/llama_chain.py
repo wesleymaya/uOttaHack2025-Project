@@ -3,7 +3,7 @@ from langchain_core.prompts import ChatPromptTemplate
 from langchain_core.output_parsers import JsonOutputParser
 from datetime import datetime
 from main import get_api
-from db import send_json_to_mongodb
+from db import send_json_to_mongodb, conversation_collection
 import json
 
 # Initialize Groq API
@@ -157,7 +157,7 @@ def parse_budget(description: str):
         "conversation": result.get("conversation", "I couldn't process your input fully. Could you try rephrasing?")
     }
 
-    send_json_to_mongodb(final_result)
+    send_json_to_mongodb(final_result, conversation_collection)
     return final_result
 
 

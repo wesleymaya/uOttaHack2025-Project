@@ -6,7 +6,8 @@ export default function Chat({ messages, addMessage }) {
     const [inputText, setInputText] = useState('');
     const [response, setResponse] = useState(null);
 
-    const sendMessage = async () => {
+    const sendMessage = async (e) => {
+        e.preventDefault();
         if (!inputText.trim()) {
             alert("Message cannot be empty!");
             return;
@@ -15,7 +16,7 @@ export default function Chat({ messages, addMessage }) {
         // Add the user's message immediately
         addMessage('user', inputText);
 
-        e.preventDefault();
+
         try {
             const res = await axios.post('http://localhost:8000/getdata', {
                 message: inputText,
