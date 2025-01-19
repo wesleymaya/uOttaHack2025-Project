@@ -1,0 +1,40 @@
+{
+  "Budget": {
+    "budget_limit": 2000.0,
+    "items": [
+      {
+        "item_name": "Rent",
+        "amount": 1200.0,
+        "category": "Recurring",
+        "importance_rank": 1,
+        "recurrence_schedule": "monthly",
+        "due_date": 1
+      },
+      {
+        "item_name": "Groceries",
+        "amount": 350.0,
+        "category": "Regular",
+        "importance_rank": 2,
+        "recurrence_schedule": "weekly",
+        "due_date": null
+      },
+      {
+        "item_name": "Utilities",
+        "amount": 400.0,
+        "category": "Recurring",
+        "importance_rank": 3,
+        "recurrence_schedule": "monthly",
+        "due_date": 15
+      }
+    ],
+    "warnings": [],
+    "conversations": [
+      "I've updated your budget to reflect the new limit of $2500 and added the new recurring item, Utilities. Your current total is $1900, which is under your budget limit of $2500. Let me know if you need to make any further changes!",
+      "I've updated the groceries amount to $350. Since there was no 'car repairs' item in your budget to begin with, I didn't need to make any changes there. As for adding a $600 TV, your new total would be $2450, which is still under your budget limit.",
+      "To better manage your budget, I recommend regularly reviewing your expenses and adjusting them as needed. You can start by categorizing your expenses into needs (like rent and utilities) and wants (like entertainment). Then, prioritize your needs and allocate your budget accordingly. Currently, your budget limit is $2000.00, and your total expenses are $1550.00 ($1200.00 for rent and $350.00 for groceries). You have $450.00 left for other expenses."
+    ]
+  },
+  "conversation": "To better manage your budget, I recommend regularly reviewing your expenses and adjusting them as needed. You can start by categorizing your expenses into needs (like rent and utilities) and wants (like entertainment). Then, prioritize your needs and allocate your budget accordingly. Currently, your budget limit is $2000.00, and your total expenses are $1550.00 ($1200.00 for rent and $350.00 for groceries). You have $450.00 left for other expenses."
+}
+
+Full sample json

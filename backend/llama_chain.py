@@ -3,7 +3,7 @@ from langchain_core.prompts import ChatPromptTemplate
 from langchain_core.output_parsers import JsonOutputParser
 from datetime import datetime
 from main import get_api
-from db import send_json_to_mongodb, conversation_collection
+from db import conversation_collection
 import json
 
 # Initialize Groq API

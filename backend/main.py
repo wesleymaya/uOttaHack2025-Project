@@ -52,6 +52,7 @@ async def receive_data(data: DataModel):
 def main():
     try:
         print("Listening for users...")
+        connect_to_db()
         uvicorn.run(app, host="0.0.0.0", port=8000)
     except(HTTPException):
         print("Error: Issue when trying to listen for users.")
