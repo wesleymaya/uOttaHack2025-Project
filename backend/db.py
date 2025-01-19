@@ -56,7 +56,6 @@ def send_json_to_mongodb(data, collection):
         raise
 
 
-
 def delete_conversation_state():
     """
     Deletes all conversation state data from the database.
