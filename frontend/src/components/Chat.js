@@ -1,7 +1,10 @@
 import { useState } from 'react';
 
+const express = require('express');
+const axios = require('axios');
+
 export default function Chat({ messages, addMessage }) {
-  const [inputText, setInputText] = useState('');
+    const [inputText, setInputText] = useState('');
 
     const sendMessage = async () => {
         if (!inputText.trim()) {
@@ -9,10 +12,14 @@ export default function Chat({ messages, addMessage }) {
             return;
         }
 
+        // Add the user's message immediately
+        addMessage('user', inputText);
+
         try {
             const res = await fetch('/api/chat', {
                 method: 'POST',
-                headers: { 'Content-Type': 'application/json' },
+                headers: {
+                    'Content-Type': 'http://localhost:8000/getdata' },
                 body: JSON.stringify({ user_message: inputText }),
             });
 
@@ -21,7 +28,8 @@ export default function Chat({ messages, addMessage }) {
             }
 
             const data = await res.json();
-            addMessage('user', inputText);
+
+            // Add the assistant's response
             addMessage('assistant', data.assistant_response);
             setInputText('');
         } catch (error) {
@@ -30,28 +38,27 @@ export default function Chat({ messages, addMessage }) {
         }
     };
 
-
-  return (
-    <div className="mb-4">
-      <div className="chat-box p-4 border rounded mb-4">
-        {messages.map((msg, idx) => (
-          <p key={idx} className={msg.role === 'user' ? 'text-blue-500' : 'text-green-500'}>
-            <strong>{msg.role === 'user' ? 'You:' : 'Assistant:'}</strong> {msg.content}
-          </p>
-        ))}
-      </div>
-      <textarea
-        className="w-full p-2 border rounded text-black"
-        value={inputText}
-        onChange={(e) => setInputText(e.target.value)}
-        placeholder="Type your expense or question..."
-      />
-      <button
-        className="bg-blue-500 text-white px-4 py-2 mt-2 rounded"
-        onClick={sendMessage}
-      >
-        Send
-      </button>
-    </div>
-  );
+    return (
+        <div className="mb-4">
+            <div className="chat-box p-4 border rounded mb-4">
+                {messages.map((msg, idx) => (
+                    <p key={idx} className={msg.role === 'user' ? 'text-left bg-blue-400 text-white-500 mt-1 rounded-lg px-2' : 'text-right bg-green-400 text-white-500 mt-1 rounded-lg px-2'}>
+                        <strong>{msg.role === 'user' ? 'You:' : 'Assistant:'}</strong> {msg.content}
+                    </p>
+                ))}
+            </div>
+            <textarea
+                className="w-full p-2 min-h-10 border rounded text-black"
+                value={inputText}
+                onChange={(e) => setInputText(e.target.value)}
+                placeholder="Type your expense or question..."
+            />
+            <button
+                className="bg-blue-500 hover:bg-blue-600 text-white px-4 py-2 mt-2 rounded"
+                onClick={sendMessage}
+            >
+                Send
+            </button>
+        </div>
+    );
 }

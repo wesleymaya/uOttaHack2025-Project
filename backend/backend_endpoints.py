@@ -95,7 +95,7 @@ def reset_budget():
 
 
 
-
+'''
 @app.on_event("startup")
 async def startup_event():
     print("API is starting up. Connected to MongoDB!")
@@ -103,3 +103,4 @@ async def startup_event():
 @app.on_event("shutdown")
 async def shutdown_event():
     print("API is shutting down. Disconnected from MongoDB!")
+'''
