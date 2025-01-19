@@ -95,7 +95,6 @@ export default function Dashboard() {
                             <th className="border px-4 py-2">Item</th>
                             <th className="border px-4 py-2">Amount</th>
                             <th className="border px-4 py-2">Category</th>
-                            <th className="border px-4 py-2">Importance Rank</th>
                             <th className="border px-4 py-2">Recurrence Schedule</th>
                             <th className="border px-4 py-2">Due Date</th>
                         </tr>
@@ -115,7 +114,7 @@ export default function Dashboard() {
                 </table>
             </div>
 
-            <h3>Expense Distribution (Pie Chart):</h3>
+            <h3 className="text-center">Expense Distribution (Pie Chart):</h3>
             <div className="w-1/2 mx-auto">
                 <Pie data={pieData} />
             </div>

@@ -1,5 +1,8 @@
 import { useState } from 'react';
 
+const express = require('express');
+const axios = require('axios');
+
 export default function Chat({ messages, addMessage }) {
     const [inputText, setInputText] = useState('');
 
@@ -15,7 +18,8 @@ export default function Chat({ messages, addMessage }) {
         try {
             const res = await fetch('/api/chat', {
                 method: 'POST',
-                headers: { 'Content-Type': 'application/json' },
+                headers: {
+                    'Content-Type': 'http://localhost:8000/getdata' },
                 body: JSON.stringify({ user_message: inputText }),
             });
 
