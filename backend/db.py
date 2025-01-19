@@ -30,80 +30,26 @@ def connect_to_db():
         print(f"An unexpected error occurred: {e}")
         raise
 
-def insert_budget_item(item):
+def send_json_to_mongodb(data, collection):
     """
-    Inserts a new budget item into the database.
-    :param item: Dictionary containing budget item details.
-    :return: Inserted ID.
-    """
-    return budget_items_collection.insert_one(item).inserted_id
-
-
-def edit_budget_item(item_name, updates):
-    """
-    Edits a budget item in the database by item_name.
-    :param item_name: The name of the item to update.
-    :param updates: A dictionary containing the fields to update and their new values.
-    :return: The result of the update operation.
-    """
-    if not updates:
-        raise ValueError("Updates cannot be empty.")
-
-    result = budget_items_collection.update_one(
-        {"item_name": item_name},  # Filter
-        {"$set": updates}  # Update
-    )
-
-    if result.matched_count == 0:
-        print(f"No budget item found with name '{item_name}'.")
-        return None
-
-    print(f"Updated budget item '{item_name}' with {updates}.")
-    return result
-
-def get_budget_limit():
-    """
-    Retrieves the budget limit from the database.
-    :return: The budget limit as a float, or a default value if not set.
-    """
-    settings_collection = db["settings"]
-    limit_doc = settings_collection.find_one({"key": "budget_limit"})
+    Sends the given JSON content to the specified MongoDB collection.
+    This function overwrites any existing data in the collection.
     
-    if limit_doc and "value" in limit_doc:
-        return limit_doc["value"]
-    
-    # Default budget limit if not found in the database
-    return 2000.0
+    :param data: The JSON-serializable data to be sent.
+    :param collection: The MongoDB collection to overwrite.
+    :return: Result of the insertion operation.
+    """
+    try:
+        # Overwrite the existing data in the collection
+        collection.delete_many({})  # Delete all existing documents
+        result = collection.insert_one(data)  # Insert the new data
+        
+        print("JSON content successfully sent to MongoDB!")
+        return result
+    except Exception as e:
+        print(f"An error occurred while sending JSON to MongoDB: {e}")
+        raise
 
-
-def get_budget_items():
-    """
-    Retrieves all budget items from the database.
-    :return: List of budget items.
-    """
-    return list(budget_items_collection.find())
-
-def delete_budget_items():
-    """
-    Deletes all budget items from the database.
-    :return: Result of the delete operation.
-    """
-    return budget_items_collection.delete_many({})
-
-def insert_conversation_state(state):
-    """
-    Inserts a conversation state into the database.
-    :param state: Dictionary containing conversation state details.
-    :return: Inserted ID.
-    """
-    return conversation_collection.insert_one(state).inserted_id
-
-def get_conversation_state():
-    """
-    Retrieves the current conversation state from the database.
-    :return: List of conversation states.
-    """
-    return list(conversation_collection.find())
 
 def delete_conversation_state():
     """
@@ -114,12 +60,6 @@ def delete_conversation_state():
 
 # Connection handlers for app lifecycle
 
-def connect_to_db():
-    """Establish connection to MongoDB."""
-    global client
-    client = MongoClient(MONGO_URI)
-    print("Connected to MongoDB")
-
 def close_db_connection():
     """Close connection to MongoDB."""
     client.close()
@@ -128,6 +68,7 @@ def close_db_connection():
 if __name__ == "__main__":
     try:
         connect_to_db()
+        
         print("Connection to MongoDB was successful.")
     except Exception as e:
         print("Error while connecting to MongoDB:", e)
