@@ -83,15 +83,15 @@ export default function Dashboard() {
     };
 
     return (
-        <div className="p-4 border rounded mb-4">
-            <h1>Dashboard</h1>
+        <div className="p-4 border border-orange-500 rounded mb-4">
+            <h1 className="font-bold underline">Dashboard</h1>
             <h2>Budget Limit: ${budgetData.budget_limit.toFixed(2)}</h2>
 
             <h3>Expenses:</h3>
             <div className="mb-4">
-                <table className="table-auto w-full border">
+                <table className="table-auto">
                     <thead>
-                        <tr>
+                        <tr className="bg-orange-500">
                             <th className="border px-4 py-2">Item</th>
                             <th className="border px-4 py-2">Amount</th>
                             <th className="border px-4 py-2">Category</th>
@@ -101,7 +101,7 @@ export default function Dashboard() {
                     </thead>
                     <tbody>
                         {budgetData.items.map((item, index) => (
-                            <tr key={index}>
+                            <tr className="bg-orange-600" key={index}>
                                 <td className="border px-4 py-2">{item.item_name}</td>
                                 <td className="border px-4 py-2">${item.amount.toFixed(2)}</td>
                                 <td className="border px-4 py-2">{item.category}</td>
