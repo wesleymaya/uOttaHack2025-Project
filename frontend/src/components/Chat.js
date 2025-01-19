@@ -38,19 +38,19 @@ export default function Chat({ messages, addMessage }) {
         <div className="mb-4">
             <div className="chat-box p-4 border rounded mb-4">
                 {messages.map((msg, idx) => (
-                    <p key={idx} className={msg.role === 'user' ? 'text-blue-500' : 'text-green-500'}>
+                    <p key={idx} className={msg.role === 'user' ? 'text-left bg-blue-400 text-white-500 mt-1 rounded-lg px-2' : 'text-right bg-green-400 text-white-500 mt-1 rounded-lg px-2'}>
                         <strong>{msg.role === 'user' ? 'You:' : 'Assistant:'}</strong> {msg.content}
                     </p>
                 ))}
             </div>
             <textarea
-                className="w-full p-2 border rounded text-black"
+                className="w-full p-2 min-h-10 border rounded text-black"
                 value={inputText}
                 onChange={(e) => setInputText(e.target.value)}
                 placeholder="Type your expense or question..."
             />
             <button
-                className="bg-blue-500 text-white px-4 py-2 mt-2 rounded"
+                className="bg-blue-500 hover:bg-blue-600 text-white px-4 py-2 mt-2 rounded"
                 onClick={sendMessage}
             >
                 Send
