@@ -2,7 +2,7 @@
 import json, llama_chain
 from fastapi import FastAPI, HTTPException
 from pydantic import BaseModel
-from db import connect_to_db
+#from db import connect_to_db
 
 app = FastAPI()
 

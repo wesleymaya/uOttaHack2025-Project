@@ -2,9 +2,28 @@ from langchain_groq import ChatGroq
 from langchain_core.prompts import ChatPromptTemplate
 from langchain_core.output_parsers import JsonOutputParser
 from datetime import datetime
-from main import get_api
-from db import conversation_collection
+#from main import get_api
+#from db import conversation_collection
 import json
+
+def get_api(filename="config.json"):
+    """
+    Reads and returns the API key from a JSON config file.
+    
+    Parameters:
+        filename (str): Path to the config JSON file.
+                       Defaults to "config.json".
+    
+    Returns:
+        str: The API key (returns an empty string if not found).
+    """
+    try:
+        with open(filename, "r") as file:
+            config = json.load(file)
+        return config.get("grok_api_key", ""), config.get("elevenlabs_api_key","")
+    except (FileNotFoundError, json.JSONDecodeError):
+        print(f"Error: Could not read or parse {filename}.")
+        return ""
 
 # Initialize Groq API
 groq_api, _ = get_api()
@@ -61,6 +80,9 @@ parser = JsonOutputParser(pydantic_object={
     "required": ["Budget", "conversation"]
 })
 
+
+
+
 # Enhanced prompt with conversation capabilities
 def generate_prompt(previous_budget: dict):
     return ChatPromptTemplate.from_messages([
@@ -96,9 +118,10 @@ current_budget = {
 }
 
 def send_json_to_mongodb(final_result):
-    if not conversation_collection:
-        raise ValueError("MongoDB collection 'conversation_collection' is not initialized. Ensure 'connect_to_db' has been called.")
-    conversation_collection.insert_one(final_result)
+    # if not conversation_collection:
+    #     raise ValueError("MongoDB collection 'conversation_collection' is not initialized. Ensure 'connect_to_db' has been called.")
+    # conversation_collection.insert_one(final_result)
+    return 0
 
 def parse_budget(description: str):
     """
@@ -160,8 +183,6 @@ def parse_budget(description: str):
         "conversation": result.get("conversation", "I couldn't process your input fully. Could you try rephrasing?")
     }
 
-    if conversation_collection is None:
-        raise ValueError("MongoDB collection 'conversation_collection' is not initialized. Ensure 'connect_to_db' has been called.")
     
     # Replaces code below
     send_json_to_mongodb(final_result)
@@ -230,12 +251,12 @@ def get_conversation_string():
 # print("------"*5,"END OF 3RD PROMPT","------"*5 )
 
 
-# chatprompt = "Starting chat"
-# #print(chatprompt)
-# while True:
-#     description = input(chatprompt+": ")
-#     if description != "-1":
-#         parse_budget(description)
-#         chatprompt = get_conversation_string()
+chatprompt = "Starting chat"
+#print(chatprompt)
+while True:
+    description = input(chatprompt+": ")
+    if description != "-1":
+        parse_budget(description)
+        chatprompt = get_conversation_string()
 
 
