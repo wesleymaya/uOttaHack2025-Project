@@ -5,6 +5,16 @@ from pydantic import BaseModel
 
 app = FastAPI()
 
+from fastapi.middleware.cors import CORSMiddleware
+
+app.add_middleware(
+    CORSMiddleware,
+    allow_origins=["http://localhost:3000"],  # Or the domain of your frontend
+    allow_credentials=True,
+    allow_methods=["*"],
+    allow_headers=["*"],
+)
+
 # Define a data model for request validation
 class DataModel(BaseModel):
     message: str
@@ -32,7 +42,7 @@ def get_api(filename="config.json"):
 # Main way the front-end will request data from Groq/MongoDB
 @app.post("/getdata")
 async def receive_data(data: DataModel):
-    #print(f"Received data: {data.message}")
+    print(f"Received data: {data.message}")
     answer = llama_chain.parse_budget(data.message)
     return answer
 
@@ -40,8 +50,8 @@ async def receive_data(data: DataModel):
 # **Test if works
 def main():
     try:
-        uvicorn.run(app, host="0.0.0.0", port=8000)
         print("Listening for users...")
+        uvicorn.run(app, host="0.0.0.0", port=8000)
     except(HTTPException):
         print("Error: Issue when trying to listen for users.")
 
