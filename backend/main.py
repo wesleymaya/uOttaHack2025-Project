@@ -2,6 +2,7 @@
 import json, llama_chain
 from fastapi import FastAPI, HTTPException
 from pydantic import BaseModel
+from db import connect_to_db
 
 app = FastAPI()
 
@@ -37,8 +38,8 @@ def get_api(filename="config.json"):
     except (FileNotFoundError, json.JSONDecodeError):
         print(f"Error: Could not read or parse {filename}.")
         return ""
-    
-# **Test if works
+
+
 # Main way the front-end will request data from Groq/MongoDB
 @app.post("/getdata")
 async def receive_data(data: DataModel):

@@ -15,7 +15,7 @@ def connect_to_db():
     try:
         client = MongoClient(MONGO_URI, serverSelectionTimeoutMS=5000)  # Timeout after 5 seconds
         # Test the connection
-        client.admin.command("ping")
+        #client.admin.command("ping")
         db = client["main_db"]
         conversation_collection = db["conversation_state"]
         print("Connected to MongoDB!")
@@ -29,6 +29,7 @@ def connect_to_db():
         print(f"An unexpected error occurred: {e}")
         raise
 
+'''
 def send_json_to_mongodb(data, collection):
     """
     Sends the given JSON content to the specified MongoDB collection.
@@ -52,6 +53,7 @@ def send_json_to_mongodb(data, collection):
     except Exception as e:
         print(f"An error occurred while sending JSON to MongoDB: {e}")
         raise
+    '''
 
 
 def delete_conversation_state():

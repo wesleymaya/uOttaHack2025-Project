@@ -95,7 +95,10 @@ current_budget = {
     }
 }
 
-
+def send_json_to_mongodb(final_result):
+    if not conversation_collection:
+        raise ValueError("MongoDB collection 'conversation_collection' is not initialized. Ensure 'connect_to_db' has been called.")
+    conversation_collection.insert_one(final_result)
 
 def parse_budget(description: str):
     """
@@ -157,7 +160,18 @@ def parse_budget(description: str):
         "conversation": result.get("conversation", "I couldn't process your input fully. Could you try rephrasing?")
     }
 
+    if conversation_collection is None:
+        raise ValueError("MongoDB collection 'conversation_collection' is not initialized. Ensure 'connect_to_db' has been called.")
+    
+    # Replaces code below
+    send_json_to_mongodb(final_result)
+   
+    '''
+    if not conversation_collection:
+        raise ValueError("Mongo")
     send_json_to_mongodb(final_result, conversation_collection)
+    '''
+
     return final_result
 
 
