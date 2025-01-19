@@ -105,7 +105,6 @@ export default function Dashboard() {
                                 <td className="border px-4 py-2">{item.item_name}</td>
                                 <td className="border px-4 py-2">${item.amount.toFixed(2)}</td>
                                 <td className="border px-4 py-2">{item.category}</td>
-                                <td className="border px-4 py-2">{item.importance_rank}</td>
                                 <td className="border px-4 py-2">{item.recurrence_schedule}</td>
                                 <td className="border px-4 py-2">{item.due_date ? item.due_date : "N/A"}</td>
                             </tr>
