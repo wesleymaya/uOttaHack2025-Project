@@ -4,36 +4,26 @@ const axios = require('axios');
 
 export default function Chat({ messages, addMessage }) {
     const [inputText, setInputText] = useState('');
+    const [response, setResponse] = useState(null);
 
     const sendMessage = async () => {
         if (!inputText.trim()) {
             alert("Message cannot be empty!");
             return;
         }
-
+            
         // Add the user's message immediately
         addMessage('user', inputText);
 
+        e.preventDefault();
         try {
-            const res = await fetch('http://localhost:8000/getdata', {
-                method: 'POST',
-                headers: {
-                    'Content-Type': 'application.json' },
-                body: JSON.stringify({ user_message: inputText }),
+            const res = await axios.post('http://localhost:8000/getdata', {
+                message: inputText,
             });
-
-            if (!res.ok) {
-                throw new Error(`Server error: ${res.statusText}`);
-            }
-
-            const data = await res.json();
-
-            // Add the assistant's response
-            addMessage('assistant', data.assistant_response);
-            setInputText('');
+            setResponse(res.data);
         } catch (error) {
-            console.error("Error sending message:", error);
-            alert("Failed to send message. Please try again.");
+            console.error('Error sending message:', error);
+            setResponse(error.response?.data || 'An error occurred');
         }
     };
 
@@ -58,6 +48,7 @@ export default function Chat({ messages, addMessage }) {
             >
                 Send
             </button>
+            {response && <div>Response: {JSON.stringify(response)}</div>}
         </div>
     );
 }
