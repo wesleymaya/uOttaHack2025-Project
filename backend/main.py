@@ -1,5 +1,13 @@
 #TODO
-import json
+import json, backend_endpoints, llama_chain
+from fastapi import FastAPI, HTTPException
+from pydantic import BaseModel
+
+app = FastAPI()
+
+# Define a data model for request validation
+class DataModel(BaseModel):
+    message: str
 
 def get_api(filename="config.json"):
     """
@@ -20,13 +28,33 @@ def get_api(filename="config.json"):
         print(f"Error: Could not read or parse {filename}.")
         return ""
     
+# **Test if works
+# Main way the front-end will request data from Groq/MongoDB
+@app.post("/getdata")
+async def receive_data(data: DataModel):
+    #print(f"Received data: {data.message}")
+    answer = llama_chain.parse_budget(data.message)
+    return answer
+
+
+# **Test if works
 def main():
-    # Demonstration of how to use get_api()
+    try:
+        uvicorn.run(app, host="0.0.0.0", port=8000)
+        print("Listening for users...")
+    except(HTTPException):
+        print("Error: Issue when trying to listen for users.")
+
+    
+if __name__ == "__main__":
+    import uvicorn
+    main()
+
+'''
+ # Demonstration of how to use get_api()
     grok_key,elevenlabs_key = get_api()
     if grok_key and elevenlabs_key:
         print(f"Your API key is: {grok_key}\nYour elevenlabs key is: {elevenlabs_key}")
     else:
         print("No API key found.")
-    
-if __name__ == "__main__":
-    main()
+'''
