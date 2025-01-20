@@ -33,7 +33,7 @@ export default function Chat({ messages, addMessage }) {
             <div className="chat-box p-4 border rounded mb-4">
                 {messages.map((msg, idx) => (
                     <p key={idx} className={msg.role === 'user' ? 'text-left bg-blue-400 text-white-500 mt-1 rounded-lg px-2' : 'text-right bg-green-400 text-white-500 mt-1 rounded-lg px-2'}>
-                        <strong>{msg.role === 'user' ? 'You:' : 'Assistant:'}</strong> {msg.content}
+                        <strong>{msg.role === 'user' ? 'You:' : 'Assistant:'}</strong> {msg.content["conversation"]}
                     </p>
                 ))}
             </div>
@@ -49,7 +49,7 @@ export default function Chat({ messages, addMessage }) {
             >
                 Send
             </button>
-            {response && <div>Response: {JSON.stringify(response)}</div>}
+            {response && <div id = "response-div">{JSON.stringify(response)}</div>}
         </div>
     );
 }

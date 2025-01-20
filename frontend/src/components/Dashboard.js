@@ -5,53 +5,29 @@ import { Chart as ChartJS, ArcElement, Tooltip, Legend } from 'chart.js';
 ChartJS.register(ArcElement, Tooltip, Legend);
 
 export default function Dashboard() {
-    // Simulate fetching data from the backend
     const [budgetData, setBudgetData] = useState(null);
 
     useEffect(() => {
-        // Mock data (replace this with actual API call later)
-        const mockData = {
-            "Budget": {
-                "budget_limit": 2000.0,
-                "items": [
-                    {
-                        "item_name": "Rent",
-                        "amount": 1200.0,
-                        "category": "Recurring",
-                        "importance_rank": 1,
-                        "recurrence_schedule": "monthly",
-                        "due_date": 1
-                    },
-                    {
-                        "item_name": "Groceries",
-                        "amount": 350.0,
-                        "category": "Regular",
-                        "importance_rank": 2,
-                        "recurrence_schedule": "weekly",
-                        "due_date": null
-                    },
-                    {
-                        "item_name": "Utilities",
-                        "amount": 400.0,
-                        "category": "Recurring",
-                        "importance_rank": 3,
-                        "recurrence_schedule": "monthly",
-                        "due_date": 15
+        const intervalId = setInterval(() => {
+            const responseDiv = document.getElementById('response-div');
+            if (responseDiv) {
+                const jsonData = responseDiv.textContent;
+                if (jsonData) {
+                    try {
+                        const parsedData = JSON.parse(jsonData);
+                        setBudgetData(parsedData.Budget);
+                    } catch (error) {
+                        console.error('Error parsing JSON data:', error);
                     }
-                ]
+                }
             }
-        };
+        }, 10); // Check every second
 
-        // var realdata = POST(req) how do i connect api??????????
-
-        // Simulate delay and set data
-        setTimeout(() => {
-            setBudgetData(mockData.Budget);
-        }, 1000);
+        return () => clearInterval(intervalId); // Cleanup interval on unmount
     }, []);
 
     if (!budgetData) {
-        return <div className="p-4 border rounded mb-4">Loading...</div>;
+        return <div className="p-4 border rounded mb-4">No data available</div>;
     }
 
     // Calculate leftover budget
