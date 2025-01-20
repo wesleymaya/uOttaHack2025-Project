@@ -42,6 +42,8 @@ export default function Dashboard() {
             }
         };
 
+        // var realdata = POST(req) how do i connect api??????????
+
         // Simulate delay and set data
         setTimeout(() => {
             setBudgetData(mockData.Budget);

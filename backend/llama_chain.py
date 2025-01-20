@@ -250,13 +250,13 @@ def get_conversation_string():
 # parse_budget(description3)
 # print("------"*5,"END OF 3RD PROMPT","------"*5 )
 
-
-chatprompt = "Starting chat"
-#print(chatprompt)
-while True:
-    description = input(chatprompt+": ")
-    if description != "-1":
-        parse_budget(description)
-        chatprompt = get_conversation_string()
+if __name__ == "__main__":
+    chatprompt = "Starting chat"
+    #print(chatprompt)
+    while True:
+        description = input(chatprompt+": ")
+        if description != "-1":
+            parse_budget(description)
+            chatprompt = get_conversation_string()
 
 
