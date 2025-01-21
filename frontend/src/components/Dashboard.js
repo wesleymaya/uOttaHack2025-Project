@@ -4,30 +4,31 @@ import { Chart as ChartJS, ArcElement, Tooltip, Legend } from 'chart.js';
 
 ChartJS.register(ArcElement, Tooltip, Legend);
 
-export default function Dashboard() {
+export default function Dashboard({ addMessage, dashboardData }) {
     const [budgetData, setBudgetData] = useState(null);
 
     useEffect(() => {
-        const intervalId = setInterval(() => {
-            const responseDiv = document.getElementById('response-div');
-            if (responseDiv) {
-                const jsonData = responseDiv.textContent;
-                if (jsonData) {
-                    try {
-                        const parsedData = JSON.parse(jsonData);
-                        setBudgetData(parsedData.Budget);
-                    } catch (error) {
-                        console.error('Error parsing JSON data:', error);
-                    }
-                }
+        // Update budgetData when dashboardData changes
+        if (dashboardData) {
+            console.log("Received dashboardData:", dashboardData);
+            try {
+                // Parse or use dashboardData as is, depending on its format
+                const parsedData = typeof dashboardData === "string"
+                    ? JSON.parse(dashboardData)
+                    : dashboardData;
+                setBudgetData(parsedData.Budget);
+            } catch (error) {
+                console.error('Error parsing dashboardData:', error);
             }
-        }, 10); // Check every second
-
-        return () => clearInterval(intervalId); // Cleanup interval on unmount
-    }, []);
+        }
+    }, [dashboardData]);
 
     if (!budgetData) {
-        return <div className="p-4 border rounded mb-4">No data available</div>;
+        return (
+            <div className="p-4 border rounded mb-4">
+                No data available. Start by telling the Assistant your income!
+            </div>
+        );
     }
 
     // Calculate leftover budget
@@ -62,6 +63,11 @@ export default function Dashboard() {
 
     return (
         <div className="p-4 border border-orange-500 rounded mb-4">
+            <div>
+                <h3>Dashboard Data:</h3>
+                {dashboardData ? <p>Data: {JSON.stringify(dashboardData)}</p> : <p>No data yet</p>}
+            </div>
+
             <h1 className="font-bold underline">Dashboard</h1>
             <h2>Budget Limit: ${budgetData.budget_limit.toFixed(2)}</h2>
 
